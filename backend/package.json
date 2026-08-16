@@ -7,10 +7,6 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
 
-    "build:frontend": "cd ../frontend && npm install && npm run build",
-
-    "copy:frontend": "node scripts/copy-frontend.mjs",
-
     "build": "tsc -p tsconfig.json",
 
     "start": "tsx src/index.ts",
