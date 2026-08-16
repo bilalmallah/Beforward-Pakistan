@@ -11,10 +11,7 @@
 
     "copy:frontend": "node scripts/copy-frontend.mjs",
 
-    "build:backend": "tsc -p tsconfig.json",
-
-
-    "build": "npm run build:frontend && npm run copy:frontend && npm run build:backend",
+    "build": "tsc -p tsconfig.json",
 
     "start": "tsx src/index.ts",
 
