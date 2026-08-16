@@ -20,4 +20,6 @@ router.get('/:id', getTemplateHandler);
 router.post('/', requireRole(UserRole.SUPER_ADMIN, UserRole.ADMIN), createTemplateHandler);
 router.patch('/:id/status', requireRole(UserRole.SUPER_ADMIN, UserRole.ADMIN), updateTemplateStatusHandler);
 
+
+
 export default router;

@@ -5,6 +5,8 @@ import config from './config/config';
 import { generalLimiter } from './middleware/rateLimiter';
 import errorHandler from './middleware/errorHandler';
 import notFoundHandler from './middleware/notFoundHandler';
+import serveFrontend from './middleware/serveFrontend';
+
 
 import authRouter from './features/Auth/Auth.router';
 import userRouter from './features/User/User.router';
@@ -15,7 +17,8 @@ import whatsappRouter from './features/WhatsApp/WhatsApp.router';
 import templateRouter from './features/WhatsApp/Template.router';
 import vehicleRouter from './features/Vehicle/Vehicle.router';
 import campaignRouter from './features/Campaign/Campaign.router';
-
+import ticketRouter from './features/Ticket/Ticket.router';
+import followUpRouter from './features/FollowUp/FollowUp.router';
 const app: Application = express();
 
 app.use(helmet());
@@ -53,11 +56,16 @@ app.use('/api/whatsapp', whatsappRouter);
 app.use('/api/whatsapp/templates', templateRouter);
 app.use('/api/vehicles', vehicleRouter);
 app.use('/api/campaigns', campaignRouter);
+app.use('/api/tickets', ticketRouter);
+app.use('/api/followups', followUpRouter);
 
-// Phase 7+ routers (tickets, follow-ups, analytics, account-health,
-// call-permissions, audit-logs, notifications) mount here as they land.
+// Phase 8+ routers (analytics, account-health, audit-logs, notifications)
+// mount here as they land.
 
 app.use('/api', notFoundHandler);
+
+// ------------------- Frontend SPA -------------------
+app.use(serveFrontend());
 
 // TODO (later phase): serveFrontend() for the built SPA + catch-all,
 // once the frontend production build is wired into deployment.

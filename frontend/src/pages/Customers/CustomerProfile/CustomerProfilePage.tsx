@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Send } from 'lucide-react';
+import { ArrowLeft, Send, Phone } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 import type { CustomerDetail } from '../customersApi';
-import { getCustomer, addCustomerNote } from '../customersApi';
+import { getCustomer, addCustomerNote, requestCallPermission } from '../customersApi';
 import { STATUS_LABELS, STATUS_TONE, SOURCE_LABELS } from '../../../constants/customer';
 
 function Field({ label, value }: { label: string; value: string | null | undefined }) {
@@ -23,6 +23,7 @@ export default function CustomerProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [noteBody, setNoteBody] = useState('');
   const [isSavingNote, setIsSavingNote] = useState(false);
+  const [isRequestingCall, setIsRequestingCall] = useState(false);
 
   function reload() {
     if (!id) return;
@@ -43,6 +44,17 @@ export default function CustomerProfilePage() {
       reload();
     } finally {
       setIsSavingNote(false);
+    }
+  }
+
+  async function handleRequestCallPermission() {
+    if (!id) return;
+    setIsRequestingCall(true);
+    try {
+      await requestCallPermission(id);
+      reload();
+    } finally {
+      setIsRequestingCall(false);
     }
   }
 
@@ -99,7 +111,34 @@ export default function CustomerProfilePage() {
               <Field label="WhatsApp number" value={customer.whatsappNumber} />
               <Field label="Marketing consent" value={customer.marketingOptIn ? 'Opted in' : 'Not opted in'} />
               <Field label="Opt-out status" value={customer.optedOut ? 'Opted out' : 'Not opted out'} />
-              <Field label="Call permission" value={customer.callPermissionStatus} />
+              <div>
+                <div className="text-xs text-ink-500">Call permission</div>
+                <div className="mt-0.5 flex items-center gap-2">
+                  <Badge
+                    tone={
+                      customer.callPermissionStatus === 'GRANTED'
+                        ? 'success'
+                        : customer.callPermissionStatus === 'DENIED'
+                          ? 'danger'
+                          : customer.callPermissionStatus === 'PENDING'
+                            ? 'warning'
+                            : 'neutral'
+                    }
+                  >
+                    {customer.callPermissionStatus}
+                  </Badge>
+                  {customer.callPermissionStatus !== 'PENDING' && customer.callPermissionStatus !== 'GRANTED' && (
+                    <button
+                      onClick={handleRequestCallPermission}
+                      disabled={isRequestingCall}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-brand-700 hover:underline disabled:opacity-50"
+                    >
+                      <Phone size={12} />
+                      Request
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
             <p className="mt-4 text-xs text-ink-500">
               Conversation status, message history, and the live inbox connect here starting Phase 3.

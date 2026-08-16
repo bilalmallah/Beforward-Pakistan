@@ -4,7 +4,7 @@ import config from '../../config/config';
 import Conversation, { ConversationStatus } from './Conversation.model';
 import Message, { MessageDirection, MessageStatus, MessageType } from './Message.model';
 import MessageEvent from './MessageEvent.model';
-import Customer from '../Customer/Customer.model';
+import Customer, { CallPermissionStatus } from '../Customer/Customer.model';
 import { emitToUser } from '../../realtime/socket';
 import * as WhatsAppService from '../WhatsApp/WhatsApp.service';
 import Template, { TemplateStatus } from '../WhatsApp/Template.model';
@@ -45,6 +45,22 @@ export async function getOrCreateConversation(customerId: string): Promise<Conve
 export async function recordCustomerMessage(customerId: string, body: string): Promise<Message> {
   const conversation = await getOrCreateConversation(customerId);
   const now = new Date();
+
+  // Call permission response parsing (spec section 20): while a request
+  // is PENDING, interpret a YES/NO reply as the customer's answer. The
+  // message is still recorded normally either way below — this only
+  // reads the customer's own reply, never bypasses the permission
+  // mechanism itself. Shared by both the real webhook and the dev-only
+  // simulate-inbound endpoint, since both funnel through here.
+  const customer = await Customer.findByPk(customerId);
+  if (customer?.callPermissionStatus === CallPermissionStatus.PENDING) {
+    const normalized = body.trim().toUpperCase();
+    if (normalized === 'YES') {
+      await customer.update({ callPermissionStatus: CallPermissionStatus.GRANTED });
+    } else if (normalized === 'NO') {
+      await customer.update({ callPermissionStatus: CallPermissionStatus.DENIED });
+    }
+  }
 
   const message = await Message.create({
     conversationId: conversation.id,

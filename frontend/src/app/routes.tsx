@@ -11,6 +11,8 @@ import InboxPage from '../pages/Inbox/InboxPage';
 import TemplatesPage from '../pages/Templates/TemplatesPage';
 import VehiclesPage from '../pages/Vehicles/VehiclesPage';
 import CampaignsPage from '../pages/Campaigns/CampaignsPage';
+import TicketsPage from '../pages/Tickets/TicketsPage';
+import FollowUpsPage from '../pages/FollowUps/FollowUpsPage';
 import { CAN_MANAGE_USERS, CAN_MANAGE_TEAMS } from '../constants/roles';
 
 export default function AppRoutes() {
@@ -46,6 +48,8 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route path="/tickets" element={<TicketsPage />} />
+        <Route path="/follow-ups" element={<FollowUpsPage />} />
         <Route
           path="/users"
           element={

@@ -10,6 +10,7 @@ import {
   setMarketingConsentHandler,
   assignCustomerHandler,
   addNoteHandler,
+  requestCallPermissionHandler,
 } from './Customer.controller';
 
 const router = Router();
@@ -53,6 +54,15 @@ router.post(
   '/:id/notes',
   requireRole(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.SALESPERSON),
   addNoteHandler
+);
+
+// Calling must be separate from messaging (spec section 20) — this only
+// flips status to PENDING; GRANTED/DENIED only ever comes from the
+// customer's actual reply, parsed in Webhook.service.ts.
+router.post(
+  '/:id/call-permission/request',
+  requireRole(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.SALESPERSON),
+  requestCallPermissionHandler
 );
 
 export default router;

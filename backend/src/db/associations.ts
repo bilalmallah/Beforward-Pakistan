@@ -10,6 +10,8 @@ import Template from '../features/WhatsApp/Template.model';
 import Vehicle from '../features/Vehicle/Vehicle.model';
 import Campaign from '../features/Campaign/Campaign.model';
 import CampaignRecipient from '../features/Campaign/CampaignRecipient.model';
+import Ticket from '../features/Ticket/Ticket.model';
+import FollowUp from '../features/FollowUp/FollowUp.model';
 
 export default function applyAssociations(): void {
   // Phase 1
@@ -62,4 +64,13 @@ export default function applyAssociations(): void {
   CampaignRecipient.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
   CampaignRecipient.belongsTo(Message, { foreignKey: 'messageId', as: 'message' });
   Message.belongsTo(Campaign, { foreignKey: 'campaignId', as: 'campaign' });
+
+  // Phase 7
+  Ticket.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  Ticket.belongsTo(User, { foreignKey: 'assignedSellerId', as: 'assignedSeller' });
+  Ticket.belongsTo(Team, { foreignKey: 'assignedTeamId', as: 'assignedTeam' });
+  Ticket.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+
+  FollowUp.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  FollowUp.belongsTo(User, { foreignKey: 'sellerId', as: 'seller' });
 }

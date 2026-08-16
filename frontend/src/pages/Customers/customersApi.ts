@@ -100,3 +100,8 @@ export async function setMarketingConsent(id: string, optIn: boolean, optInSourc
   });
   return data;
 }
+
+export async function requestCallPermission(id: string) {
+  const { data } = await api.post<CustomerDetail>(`/customers/${id}/call-permission/request`);
+  return data;
+}

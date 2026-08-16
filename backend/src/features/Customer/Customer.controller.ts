@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import createError from 'http-errors';
 import { Op } from 'sequelize';
 import asyncHandler from '../../utils/asyncHandler';
-import Customer from './Customer.model';
+import Customer, { CallPermissionStatus } from './Customer.model';
 import CustomerNote from './CustomerNote.model';
 import AssignmentHistory from './AssignmentHistory.model';
 import User from '../User/User.model';
@@ -181,4 +181,20 @@ export const addNoteHandler = asyncHandler(async (req: Request, res: Response) =
   });
 
   res.status(201).json(note);
+});
+
+/**
+ * Requests calling permission (spec section 20). This sets the status to
+ * PENDING; the actual permission template (e.g. "SBT Japan wants to call
+ * you — YES/NO") is sent through the normal template-send flow with a
+ * template tagged for this purpose. The customer's reply is parsed in
+ * Webhook.service.ts, which flips this to GRANTED/DENIED — calling
+ * itself is never allowed to bypass that mechanism (spec section 20).
+ */
+export const requestCallPermissionHandler = asyncHandler(async (req: Request, res: Response) => {
+  const customer = await Customer.findByPk(req.params.id);
+  if (!customer) throw createError(404, 'Customer not found.');
+
+  await customer.update({ callPermissionStatus: CallPermissionStatus.PENDING });
+  res.status(200).json(customer);
 });

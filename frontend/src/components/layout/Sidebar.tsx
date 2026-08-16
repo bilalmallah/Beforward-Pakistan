@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Building2, Contact, MessageCircle, FileText, Car, Megaphone } from 'lucide-react';
+import { LayoutDashboard, Users, Building2, Contact, MessageCircle, FileText, Car, Megaphone, Ticket, CalendarClock } from 'lucide-react';
 import clsx from 'clsx';
 import useAuth from '../../hooks/useAuth';
 import { CAN_MANAGE_USERS } from '../../constants/roles';
@@ -32,6 +32,14 @@ export default function Sidebar() {
         <NavLink to="/customers" className={navItemClass}>
           <Contact size={18} />
           Customers
+        </NavLink>
+        <NavLink to="/tickets" className={navItemClass}>
+          <Ticket size={18} />
+          Tickets
+        </NavLink>
+        <NavLink to="/follow-ups" className={navItemClass}>
+          <CalendarClock size={18} />
+          Follow-ups
         </NavLink>
 
         <div className="mt-4 mb-1 px-3 text-xs font-semibold uppercase tracking-wide text-ink-500">
@@ -80,8 +88,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="rounded-md bg-ink-100 px-3 py-2 text-xs text-ink-500">
-        Phase 6 build — requires Redis for campaign sending. Tickets, follow-ups, and analytics
-        land in later phases.
+        Phase 7 build — analytics, account health, and audit logs land in later phases.
       </div>
     </aside>
   );
