@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 
-const serveFrontend = (frontendFolder = '../frontend/dist') => {
+const serveFrontend = (frontendFolder = './dist') => {
   const router = express.Router();
 
   const rootDir = process.cwd();
