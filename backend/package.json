@@ -6,12 +6,25 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc -p tsconfig.json --noEmit",
+
+    "build:frontend": "cd ../frontend && npm install && npm run build",
+
+    "copy:frontend": "node scripts/copy-frontend.mjs",
+
+    "build:backend": "tsc -p tsconfig.json",
+
+    "build": "npm run build:frontend && npm run copy:frontend && npm run build:backend",
+
     "start": "tsx src/index.ts",
+
     "lint": "eslint \"src/**/*.ts\"",
+
     "migrate": "sequelize-cli db:migrate --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
+
     "migrate:undo": "sequelize-cli db:migrate:undo --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
+
     "seed": "sequelize-cli db:seed:all --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
+
     "seed:undo": "sequelize-cli db:seed:undo:all --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models"
   },
   "dependencies": {
