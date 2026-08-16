@@ -15,7 +15,7 @@
 
     "build": "npm run build:frontend && npm run copy:frontend && npm run build:backend",
 
-    "start": "node server-dist/index.js",
+    "start": "tsx src/index.ts",
 
     "lint": "eslint \"src/**/*.ts\"",
 
