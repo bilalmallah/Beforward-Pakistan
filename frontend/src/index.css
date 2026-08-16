@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Ice-blue professional palette (spec section 71) — used sparingly
+     for primary actions, active nav, links, and status; the app stays
+     mostly white/neutral. */
+  --color-brand-50: #f0f7ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+
+  --color-ink-900: #0f172a;
+  --color-ink-700: #334155;
+  --color-ink-500: #64748b;
+  --color-ink-300: #cbd5e1;
+  --color-ink-100: #f1f5f9;
+
+  --color-success-500: #16a34a;
+  --color-warning-500: #d97706;
+  --color-danger-500: #dc2626;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink-900);
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,65 @@
+import User from '../features/User/User.model';
+import Team from '../features/Team/Team.model';
+import Customer from '../features/Customer/Customer.model';
+import CustomerNote from '../features/Customer/CustomerNote.model';
+import AssignmentHistory from '../features/Customer/AssignmentHistory.model';
+import Conversation from '../features/Conversation/Conversation.model';
+import Message from '../features/Conversation/Message.model';
+import MessageEvent from '../features/Conversation/MessageEvent.model';
+import Template from '../features/WhatsApp/Template.model';
+import Vehicle from '../features/Vehicle/Vehicle.model';
+import Campaign from '../features/Campaign/Campaign.model';
+import CampaignRecipient from '../features/Campaign/CampaignRecipient.model';
+
+export default function applyAssociations(): void {
+  // Phase 1
+  Team.hasMany(User, { foreignKey: 'teamId', as: 'members' });
+  User.belongsTo(Team, { foreignKey: 'teamId', as: 'team' });
+
+  Team.belongsTo(User, { foreignKey: 'managerId', as: 'manager', constraints: false });
+
+  // Phase 2
+  Customer.belongsTo(User, { foreignKey: 'assignedSellerId', as: 'assignedSeller' });
+  Customer.belongsTo(Team, { foreignKey: 'assignedTeamId', as: 'assignedTeam' });
+  Customer.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+  User.hasMany(Customer, { foreignKey: 'assignedSellerId', as: 'assignedCustomers' });
+
+  Customer.hasMany(CustomerNote, { foreignKey: 'customerId', as: 'notes' });
+  CustomerNote.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  CustomerNote.belongsTo(User, { foreignKey: 'authorId', as: 'author' });
+
+  Customer.hasMany(AssignmentHistory, { foreignKey: 'customerId', as: 'assignmentHistory' });
+  AssignmentHistory.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  AssignmentHistory.belongsTo(User, { foreignKey: 'newSellerId', as: 'newSeller' });
+  AssignmentHistory.belongsTo(User, { foreignKey: 'previousSellerId', as: 'previousSeller' });
+  AssignmentHistory.belongsTo(User, { foreignKey: 'assignedBy', as: 'assignedByUser' });
+
+  // Phase 3
+  Customer.hasOne(Conversation, { foreignKey: 'customerId', as: 'conversation' });
+  Conversation.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  Conversation.belongsTo(User, { foreignKey: 'assignedSellerId', as: 'assignedSeller' });
+
+  Conversation.hasMany(Message, { foreignKey: 'conversationId', as: 'messages' });
+  Message.belongsTo(Conversation, { foreignKey: 'conversationId', as: 'conversation' });
+  Message.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  Message.belongsTo(User, { foreignKey: 'sellerId', as: 'seller' });
+
+  Message.hasMany(MessageEvent, { foreignKey: 'messageId', as: 'events' });
+  MessageEvent.belongsTo(Message, { foreignKey: 'messageId', as: 'message' });
+
+  // Phase 4
+  Template.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+
+  // Phase 5
+  Message.belongsTo(Template, { foreignKey: 'templateId', as: 'template' });
+
+  // Phase 6
+  Campaign.belongsTo(Template, { foreignKey: 'templateId', as: 'template' });
+  Campaign.belongsTo(Vehicle, { foreignKey: 'vehicleId', as: 'vehicle' });
+  Campaign.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+  Campaign.hasMany(CampaignRecipient, { foreignKey: 'campaignId', as: 'recipients' });
+  CampaignRecipient.belongsTo(Campaign, { foreignKey: 'campaignId', as: 'campaign' });
+  CampaignRecipient.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
+  CampaignRecipient.belongsTo(Message, { foreignKey: 'messageId', as: 'message' });
+  Message.belongsTo(Campaign, { foreignKey: 'campaignId', as: 'campaign' });
+}
