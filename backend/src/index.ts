@@ -20,7 +20,7 @@ async function bootstrap(): Promise<void> {
     cors: { origin: config.clientUrl, credentials: true },
   });
   initSocket(io);
-
+  // check if the frontend build exists and serve it
   // Campaign send worker (spec section 37) — rate-limited via BullMQ's
   // built-in limiter (spec section 21). Requires Redis; if unreachable it
   // logs and retries rather than crashing the API (see queue/redis.ts).
