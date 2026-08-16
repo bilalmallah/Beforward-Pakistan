@@ -1,12 +1,12 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import app from './app.js';
-import config from './config/config.js';
-import connectDb from './config/connectDb.js';
-import applyAssociations from './db/associations.js';
-import { initSocket } from './realtime/socket.js';
-import { startCampaignWorker } from './features/Campaign/Campaign.worker.js';
-import logger from './utils/logger.js';
+import app from './app';
+import config from './config/config';
+import connectDb from './config/connectDb';
+import applyAssociations from './db/associations';
+import { initSocket } from './realtime/socket';
+import { startCampaignWorker } from './features/Campaign/Campaign.worker';
+import logger from './utils/logger';
 
 async function bootstrap(): Promise<void> {
   applyAssociations();
@@ -20,7 +20,7 @@ async function bootstrap(): Promise<void> {
     cors: { origin: config.clientUrl, credentials: true },
   });
   initSocket(io);
-  // check if the frontend build exists and serve it
+
   // Campaign send worker (spec section 37) — rate-limited via BullMQ's
   // built-in limiter (spec section 21). Requires Redis; if unreachable it
   // logs and retries rather than crashing the API (see queue/redis.ts).
