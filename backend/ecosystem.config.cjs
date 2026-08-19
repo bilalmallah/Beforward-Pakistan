@@ -1,19 +1,20 @@
-// PM2 process definition. Run from the backend/ directory:
+// PM2 process definition (only needed for a self-managed VPS deployment —
+// Hostinger's managed Node.js App hosting runs the entry file itself and
+// does not need PM2). Run from the backend/ directory:
+//   npm run build
 //   pm2 start ecosystem.config.cjs --env production
 //
-// .cjs extension is required: the backend's package.json sets
-// "type": "module", and PM2 loads config files with require(), which
-// can't load an ES module — .cjs is unambiguous CommonJS regardless of
-// that setting (same reasoning as database.cjs for sequelize-cli).
+// .cjs extension is required so PM2 (which loads config files with
+// require()) always reads this as CommonJS, independent of whatever the
+// backend's own package.json "type" is set to.
 module.exports = {
   apps: [
     {
       name: 'crm-backend',
-      // Runs the local tsx binary directly against the TS entrypoint —
-      // same execution path as `npm start` (see package.json), so
-      // dev/prod behavior stays identical. No separate compile step.
-      script: 'node_modules/.bin/tsx',
-      args: 'src/index.ts',
+      // Runs the compiled output directly with plain node — same as
+      // `npm start` (see package.json). Run `npm run build` first so
+      // dist/index.js exists.
+      script: 'dist/index.js',
       cwd: __dirname,
       instances: 1,
       exec_mode: 'fork',

@@ -2,13 +2,13 @@
   "name": "crm-backend",
   "version": "0.1.0",
   "description": "WhatsApp Sales CRM - Backend",
-  "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build:frontend": "cd ../frontend && npm install && npm run build",
-    "build": "tsc -p tsconfig.json",
-    "start": "node start.js",
+    "build:backend": "tsc -p tsconfig.json",
+    "build:frontend": "npm --prefix ../frontend install && npm --prefix ../frontend run build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "start": "node dist/index.js",
     "lint": "eslint \"src/**/*.ts\"",
     "migrate": "sequelize-cli db:migrate --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
     "migrate:undo": "sequelize-cli db:migrate:undo --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
@@ -30,7 +30,6 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.3",
     "socket.io": "^4.7.5",
-    "tsx": "^4.16.2",
     "uuid": "^9.0.1",
     "winston": "^3.13.1",
     "zod": "^3.23.8"
@@ -44,6 +43,7 @@
     "@types/node": "^20.14.9",
     "@types/uuid": "^9.0.8",
     "sequelize-cli": "^6.6.2",
+    "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   }
 }

@@ -1,12 +1,11 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
 import fs from 'fs';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import logger from '../utils/logger';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// backend/src/middleware -> backend/public
+// backend/src/middleware -> backend/public (also correct once compiled to
+// backend/dist/middleware -> backend/public, same relative depth).
+// __dirname is a native CommonJS global — no ESM interop needed here.
 const PUBLIC_DIR = path.resolve(__dirname, '..', '..', 'public');
 
 /**

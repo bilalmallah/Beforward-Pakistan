@@ -34,16 +34,72 @@ Browser -> Nginx (:80/:443, TLS) -> Node backend (:4000)
   - /socket.io/*  -> Socket.IO (WebSocket)
   - everything else -> React SPA (backend/public)
 
-The frontend is built once (npm run build in frontend/) and its output
-lands directly in backend/public — see frontend/vite.config.ts. The
-backend then serves those static files itself
-(backend/src/middleware/serveFrontend.ts), so there's only one app to
-deploy and one port to reverse-proxy. No separate static host, no CORS
-juggling between a frontend domain and an API domain.
+The frontend is built once (`npm run build:frontend`, or as part of the
+combined `npm run build` — see below) and its output lands directly in
+backend/public — see frontend/vite.config.ts. The backend then serves
+those static files itself (backend/src/middleware/serveFrontend.ts), so
+there's only one app to deploy and one port to reverse-proxy. No
+separate static host, no CORS juggling between a frontend domain and an
+API domain.
 
 A second background process (the campaign send worker, started inside
 the same index.ts — see startCampaignWorker()) shares the same Node
 process; you don't need to run it separately.
+
+The backend compiles to plain CommonJS JavaScript (`backend/dist/`, via
+`npm run build:backend`) — production runs `node dist/index.js`
+directly, no `tsx`/dev tooling required. `npm run dev` still uses `tsx`
+for fast local iteration; that's a dev-only convenience and is not part
+of the production path.
+
+## Option A: Hostinger managed Node.js App hosting
+
+If your Hostinger plan includes the built-in "Node.js" application type
+in hPanel (Passenger-based; available on some shared plans as well as
+VPS), you don't need to set up Nginx/PM2/systemd yourself — Hostinger
+manages the process for you. Configure it with:
+
+| Setting | Value |
+|---|---|
+| Framework | Express |
+| Root directory | `backend` |
+| Package manager | npm |
+| Node.js version | 22.x (or the newest LTS Hostinger offers — the app only needs Node ≥ 20) |
+| Application startup file | `dist/index.js` |
+| Environment variables | see step 6 below — set them in hPanel's environment variable UI, not in a committed `.env` |
+
+Then, from the app's shell/terminal in hPanel (or via SSH if your plan
+gives you it):
+
+```bash
+cd backend
+npm install          # installs backend deps
+npm run build         # builds the frontend into backend/public AND compiles
+                       # the backend into backend/dist
+```
+
+Then start/restart the app from hPanel. Hostinger will run
+`node dist/index.js` (or your configured startup file) directly — no
+`tsx`, no TypeScript-in-production, no dev tools.
+
+**Redis/Postgres on this plan:** Hostinger's managed Node.js App hosting
+does not include Postgres or Redis. Point `DB_HOST` / `REDIS_URL` in the
+environment variables at either a Postgres/Redis instance on a Hostinger
+VPS you also control, or an external managed provider (Neon, Supabase,
+Railway for Postgres; Upstash for Redis). The app works identically
+either way — only the connection strings change. If Redis is
+unreachable, everything except campaign sending still works (see
+`queue/redis.ts` — it logs and retries rather than crashing the app).
+
+**Re-run `npm run build` after every code update** before restarting the
+app in hPanel — Hostinger does not compile TypeScript or bundle the
+frontend for you.
+
+## Option B: Full VPS (Nginx + PM2)
+
+The rest of this guide is for a Hostinger VPS where you have full root
+access and want to manage Nginx/PM2 yourself — more setup, but full
+control (custom Nginx rules, multiple apps on one box, etc).
 
 ## 1. Provision the VPS
 
@@ -143,16 +199,22 @@ then.
 
 Never commit .env to a public repo.
 
-## 7. Build the frontend
+## 7. Build the app (frontend + backend)
 
 ```bash
-cd ../frontend
+cd /var/www/crm-whatsapp/backend
 npm run build
 ```
 
-This outputs straight into backend/public — confirm with
-`ls ../backend/public` (you should see index.html and an assets/
-folder).
+This does two things in one command (see `backend/package.json`):
+- `build:frontend` — installs frontend deps and runs its Vite build,
+  which outputs straight into `backend/public` (confirm with
+  `ls public` — you should see `index.html` and an `assets/` folder)
+- `build:backend` — compiles the TypeScript backend to plain CommonJS
+  JavaScript in `backend/dist` (confirm with `ls dist/index.js`)
+
+Production runs the compiled `dist/index.js` with plain `node` — no
+TypeScript, no `tsx`, no dev tooling in the production process.
 
 ## 8. Run migrations and (optionally) seed data
 
@@ -241,9 +303,9 @@ real events to the POST endpoint.
 ```bash
 cd /var/www/crm-whatsapp
 git pull
-cd backend && npm install
+cd backend
+npm install
 npm run migrate
-cd ../frontend && npm install
 npm run build
 pm2 restart crm-backend
 ```

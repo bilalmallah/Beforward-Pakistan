@@ -1,4 +1,0 @@
-{
-  "type": "commonjs",
-  "description": "Overrides the root package.json's \"type\": \"module\" for this subtree — sequelize-cli loads config/database.cjs, migrations/*.js, and seeders/*.js via require(), which needs CommonJS. Only affects how Node resolves plain .js/.cjs files here; the .ts application source is unaffected (tsx handles it directly)."
-}
