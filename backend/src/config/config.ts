@@ -69,11 +69,11 @@ const config = Object.freeze({
   // where these get validated before use.
   meta: Object.freeze({
     appId: process.env.META_APP_ID || '',
-    appSecret: process.env.META_APP_SECRET || '',
+    appSecret: process.env.META_APP_SECRET || 'YOUR_META_APP_SECRET',
     accessToken: process.env.META_ACCESS_TOKEN || '',
     businessAccountId: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || '',
     phoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
-    verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || '',
+    verifyToken: process.env.WHATSAPP_VERIFY_TOKEN || 'my-whatsapp-secret-123',
     webhookSecret: process.env.WHATSAPP_WEBHOOK_SECRET || '',
   }),
 });
