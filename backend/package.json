@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build:frontend": "cd ../frontend && npm install && npm run build && rm -rf ../backend/public && mkdir -p ../backend/public && cp -r dist/. ../backend/public/",
+    "build:frontend": "cd ../frontend && npm install && npm run build",
     "start": "tsx src/index.ts",
     "lint": "eslint \"src/**/*.ts\"",
     "migrate": "sequelize-cli db:migrate --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
