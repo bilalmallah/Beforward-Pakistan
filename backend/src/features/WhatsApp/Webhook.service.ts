@@ -29,7 +29,6 @@ export function verifyWebhookChallenge(mode: string, token: string, challenge: s
   }
   return null;
 }
-
 interface WhatsAppStatusEntry {
   id: string;
   status: 'sent' | 'delivered' | 'read' | 'failed';

@@ -15,12 +15,16 @@ import TicketsPage from '../pages/Tickets/TicketsPage';
 import FollowUpsPage from '../pages/FollowUps/FollowUpsPage';
 import AnalyticsPage from '../pages/Analytics/AnalyticsPage';
 import WhatsAppHealthPage from '../pages/WhatsAppHealth/WhatsAppHealthPage';
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+
+
 import { CAN_MANAGE_USERS, CAN_MANAGE_TEAMS } from '../constants/roles';
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
 
       <Route
         element={
