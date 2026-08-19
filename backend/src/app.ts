@@ -76,7 +76,7 @@ app.get('/api/health', (_req, res) => {
 
 // Live-checked infrastructure status (spec section 60) — distinct from
 // the plain liveness check above.
-app.get('/api/system-health', async (_req, res) => {
+app.get('/api/health', async (_req, res) => {
   const report = await getSystemHealth();
   res.status(200).json(report);
 });
