@@ -5,6 +5,7 @@ import asyncHandler from '../../utils/asyncHandler';
 import User from './User.model';
 import Team from '../Team/Team.model';
 import { createUserSchema, updateUserSchema, listUsersQuerySchema } from './User.validator';
+import { recordAudit } from '../AuditLog/AuditLog.service';
 
 export const listUsersHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listUsersQuerySchema.safeParse(req.query);
@@ -77,6 +78,15 @@ export const updateUserHandler = asyncHandler(async (req: Request, res: Response
   if (!user) throw createError(404, 'User not found.');
 
   await user.update(parsed.data);
+
+  await recordAudit({
+    req,
+    action: 'USER_UPDATED',
+    entity: 'User',
+    entityId: user.id,
+    metadata: { changes: parsed.data },
+  });
+
   res.status(200).json(user.toSafeJSON());
 });
 

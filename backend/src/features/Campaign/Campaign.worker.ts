@@ -15,6 +15,8 @@ import MessageEvent from '../Conversation/MessageEvent.model';
 import { getOrCreateConversation } from '../Conversation/Conversation.service';
 import { resolveVariables, renderBody } from '../WhatsApp/TemplateVariable.service';
 import * as WhatsAppService from '../WhatsApp/WhatsApp.service';
+import { notify } from '../Notification/Notification.service';
+import { NotificationType } from '../Notification/Notification.model';
 
 async function processRecipient(job: Job<CampaignSendJobData>): Promise<void> {
   const { campaignId, recipientId } = job.data;
@@ -103,6 +105,14 @@ async function maybeCompleteCampaign(campaignId: string): Promise<void> {
     const campaign = await Campaign.findByPk(campaignId);
     if (campaign && campaign.status === CampaignStatus.RUNNING) {
       await campaign.update({ status: CampaignStatus.COMPLETED, completedAt: new Date() });
+      await notify({
+        userId: campaign.createdBy,
+        type: NotificationType.CAMPAIGN_COMPLETED,
+        title: `Campaign "${campaign.name}" completed`,
+        body: `${campaign.sent} sent, ${campaign.failed} failed.`,
+        entityType: 'Campaign',
+        entityId: campaign.id,
+      });
     }
   }
 }

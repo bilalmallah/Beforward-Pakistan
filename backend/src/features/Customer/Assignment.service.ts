@@ -3,6 +3,8 @@ import { Op } from 'sequelize';
 import Customer from './Customer.model';
 import AssignmentHistory, { AssignmentMethod } from './AssignmentHistory.model';
 import User, { UserRole, UserStatus } from '../User/User.model';
+import { notify } from '../Notification/Notification.service';
+import { NotificationType } from '../Notification/Notification.model';
 
 interface AssignInput {
   customerId: string;
@@ -120,6 +122,16 @@ export async function assignCustomer(input: AssignInput): Promise<Customer> {
     method: input.method,
     reason: input.reason ?? null,
     assignedBy: input.assignedByUserId,
+  });
+
+  await notify({
+    userId: seller.id,
+    type: previousSellerId ? NotificationType.NEW_ASSIGNMENT : NotificationType.NEW_LEAD,
+    title: previousSellerId
+      ? `${customer.companyName} was reassigned to you`
+      : `New lead assigned: ${customer.companyName}`,
+    entityType: 'Customer',
+    entityId: customer.id,
   });
 
   return customer;

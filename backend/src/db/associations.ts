@@ -12,6 +12,8 @@ import Campaign from '../features/Campaign/Campaign.model';
 import CampaignRecipient from '../features/Campaign/CampaignRecipient.model';
 import Ticket from '../features/Ticket/Ticket.model';
 import FollowUp from '../features/FollowUp/FollowUp.model';
+import AuditLog from '../features/AuditLog/AuditLog.model';
+import Notification from '../features/Notification/Notification.model';
 
 export default function applyAssociations(): void {
   // Phase 1
@@ -73,4 +75,10 @@ export default function applyAssociations(): void {
 
   FollowUp.belongsTo(Customer, { foreignKey: 'customerId', as: 'customer' });
   FollowUp.belongsTo(User, { foreignKey: 'sellerId', as: 'seller' });
+
+  // Phase 9
+  AuditLog.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+  // Phase 10
+  Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 }

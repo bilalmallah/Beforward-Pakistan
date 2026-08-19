@@ -4,6 +4,9 @@ import asyncHandler from '../../utils/asyncHandler';
 import Template, { TemplateStatus } from './Template.model';
 import { createTemplateSchema, updateTemplateStatusSchema } from './Template.validator';
 import { assertVariablesAreKnown } from './TemplateVariable.service';
+import { recordAudit } from '../AuditLog/AuditLog.service';
+import { notify } from '../Notification/Notification.service';
+import { NotificationType } from '../Notification/Notification.model';
 
 export const listTemplatesHandler = asyncHandler(async (req: Request, res: Response) => {
   const status = req.query.status as TemplateStatus | undefined;
@@ -61,6 +64,25 @@ export const updateTemplateStatusHandler = asyncHandler(async (req: Request, res
     metaTemplateId: parsed.data.metaTemplateId ?? template.metaTemplateId,
     rejectedReason: parsed.data.rejectedReason ?? null,
     approvedAt: parsed.data.status === TemplateStatus.APPROVED ? new Date() : template.approvedAt,
+  });
+
+  if (parsed.data.status === TemplateStatus.REJECTED) {
+    await notify({
+      userId: template.createdBy,
+      type: NotificationType.TEMPLATE_REJECTED,
+      title: `Template "${template.name}" was rejected`,
+      body: parsed.data.rejectedReason ?? undefined,
+      entityType: 'Template',
+      entityId: template.id,
+    });
+  }
+
+  await recordAudit({
+    req,
+    action: 'TEMPLATE_STATUS_CHANGED',
+    entity: 'Template',
+    entityId: template.id,
+    metadata: { newStatus: parsed.data.status },
   });
 
   res.status(200).json(template);

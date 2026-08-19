@@ -6,28 +6,17 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-
-    "build:frontend": "cd ../frontend && npm install && npm run build",
-    
-    "build:backend": "tsc -p tsconfig.json && node -e \"require('fs').writeFileSync('dist/package.json', '{\\\"type\\\":\\\"commonjs\\\"}')\"",
-
-    "build": "tsc -p tsconfig.json",
-
-    "start": "node dist/index.js",
-
+    "build": "tsc -p tsconfig.json --noEmit",
+    "start": "tsx src/index.ts",
     "lint": "eslint \"src/**/*.ts\"",
-
     "migrate": "sequelize-cli db:migrate --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
-
     "migrate:undo": "sequelize-cli db:migrate:undo --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
-
     "seed": "sequelize-cli db:seed:all --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
-
     "seed:undo": "sequelize-cli db:seed:undo:all --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "bullmq": "^5.81.2",
+    "bullmq": "^5.12.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -41,7 +30,7 @@
     "sequelize": "^6.37.3",
     "socket.io": "^4.7.5",
     "tsx": "^4.16.2",
-    "uuid": "^10.0.0",
+    "uuid": "^9.0.1",
     "winston": "^3.13.1",
     "zod": "^3.23.8"
   },

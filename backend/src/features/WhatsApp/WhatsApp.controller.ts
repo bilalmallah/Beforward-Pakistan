@@ -3,6 +3,7 @@ import asyncHandler from '../../utils/asyncHandler';
 import logger from '../../utils/logger';
 import { verifySignature, verifyWebhookChallenge, processWebhookPayload } from './Webhook.service';
 import * as WhatsAppService from './WhatsApp.service';
+import * as WhatsAppHealthService from './WhatsAppHealth.service';
 
 /** Meta's subscription verification handshake. */
 export const verifyWebhookHandler = (req: Request, res: Response): void => {
@@ -52,4 +53,21 @@ export const getBusinessAccountHandler = asyncHandler(async (_req: Request, res:
 export const getPhoneNumberHandler = asyncHandler(async (_req: Request, res: Response) => {
   const data = await WhatsAppService.getPhoneNumber();
   res.status(200).json(data);
+});
+
+/**
+ * Account health dashboard (spec section 33-34). Deliberately returns
+ * metaStatus and internalHealth as separate top-level fields — never
+ * merged into one "quality score" — so the UI can never conflate our
+ * analytics with Meta's actual account state.
+ */
+export const getHealthHandler = asyncHandler(async (_req: Request, res: Response) => {
+  const [metaStatus, internalHealth, templates, recentErrors] = await Promise.all([
+    WhatsAppHealthService.getMetaStatus(),
+    WhatsAppHealthService.calculateInternalHealth(),
+    WhatsAppHealthService.getTemplateSummary(),
+    WhatsAppHealthService.getRecentErrors(),
+  ]);
+
+  res.status(200).json({ metaStatus, internalHealth, templates, recentErrors });
 });

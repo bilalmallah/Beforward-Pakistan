@@ -15,7 +15,7 @@ const SOURCES = ['GOOGLE_PLACES', 'WEBSITE', 'REFERRAL', 'TRADE_DIRECTORY', 'MAN
 const STATUSES = ['PROSPECT', 'REGISTERED', 'NEW', 'INTERESTED', 'QUOTATION_SENT', 'NEGOTIATION'];
 
 module.exports = {
-  up: async (queryInterface) => {
+  up: async (queryInterface, Sequelize) => {
     const now = new Date();
 
     const [sellers] = await queryInterface.sequelize.query(
@@ -50,7 +50,11 @@ module.exports = {
         assigned_at: now,
         assigned_by: createdBy,
         status: STATUSES[i % STATUSES.length],
-        tags: i % 3 === 0 ? ['Toyota'] : [],
+        // An empty JS array leaves bulkInsert's raw SQL generator unable to
+        // infer the Postgres array element type ("cannot determine type of
+        // empty array") — Sequelize.literal with an explicit cast sidesteps
+        // that for the empty case; a populated array is fine as-is.
+        tags: i % 3 === 0 ? ['Toyota'] : Sequelize.literal("ARRAY[]::varchar[]"),
         marketing_opt_in: false,
         opt_in_source: null,
         opt_in_at: null,

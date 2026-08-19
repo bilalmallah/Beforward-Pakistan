@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Building2, Contact, MessageCircle, FileText, Car, Megaphone, Ticket, CalendarClock } from 'lucide-react';
+import { LayoutDashboard, Users, Building2, Contact, MessageCircle, FileText, Car, Megaphone, Ticket, CalendarClock, BarChart3, Activity } from 'lucide-react';
 import clsx from 'clsx';
 import useAuth from '../../hooks/useAuth';
 import { CAN_MANAGE_USERS } from '../../constants/roles';
@@ -41,6 +41,10 @@ export default function Sidebar() {
           <CalendarClock size={18} />
           Follow-ups
         </NavLink>
+        <NavLink to="/analytics" className={navItemClass}>
+          <BarChart3 size={18} />
+          Analytics
+        </NavLink>
 
         <div className="mt-4 mb-1 px-3 text-xs font-semibold uppercase tracking-wide text-ink-500">
           WhatsApp
@@ -59,6 +63,12 @@ export default function Sidebar() {
           <NavLink to="/campaigns" className={navItemClass}>
             <Megaphone size={18} />
             Campaigns
+          </NavLink>
+        )}
+        {canManageUsers && (
+          <NavLink to="/whatsapp-health" className={navItemClass}>
+            <Activity size={18} />
+            Account Health
           </NavLink>
         )}
 
@@ -88,7 +98,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="rounded-md bg-ink-100 px-3 py-2 text-xs text-ink-500">
-        Phase 7 build — analytics, account health, and audit logs land in later phases.
+        Phase 8 build — audit logs and security hardening land in later phases.
       </div>
     </aside>
   );

@@ -19,6 +19,7 @@ import {
   overrideTemplateLimit,
   markConversationRead,
 } from './Conversation.service';
+import { recordAudit } from '../AuditLog/AuditLog.service';
 
 export const listConversationsHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listConversationsQuerySchema.safeParse(req.query);
@@ -118,6 +119,12 @@ export const sendTemplateMessageHandler = asyncHandler(async (req: Request, res:
  */
 export const overrideTemplateLimitHandler = asyncHandler(async (req: Request, res: Response) => {
   const conversation = await overrideTemplateLimit(req.params.id);
+  await recordAudit({
+    req,
+    action: 'TEMPLATE_LIMIT_OVERRIDDEN',
+    entity: 'Conversation',
+    entityId: conversation.id,
+  });
   res.status(200).json(conversation);
 });
 

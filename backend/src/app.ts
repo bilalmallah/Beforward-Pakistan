@@ -5,8 +5,8 @@ import config from './config/config';
 import { generalLimiter } from './middleware/rateLimiter';
 import errorHandler from './middleware/errorHandler';
 import notFoundHandler from './middleware/notFoundHandler';
+import requestId from './middleware/requestId';
 import serveFrontend from './middleware/serveFrontend';
-
 
 import authRouter from './features/Auth/Auth.router';
 import userRouter from './features/User/User.router';
@@ -19,9 +19,36 @@ import vehicleRouter from './features/Vehicle/Vehicle.router';
 import campaignRouter from './features/Campaign/Campaign.router';
 import ticketRouter from './features/Ticket/Ticket.router';
 import followUpRouter from './features/FollowUp/FollowUp.router';
+import analyticsRouter from './features/Analytics/Analytics.router';
+import auditLogRouter from './features/AuditLog/AuditLog.router';
+import notificationRouter from './features/Notification/Notification.router';
+import searchRouter from './features/Search/Search.router';
+import { getSystemHealth } from './features/SystemHealth/SystemHealth.service';
+
 const app: Application = express();
 
-app.use(helmet());
+// Behind a reverse proxy (Nginx on the deployment target — see
+// DEPLOYMENT.md) so Express reads the real client IP/protocol from
+// X-Forwarded-* headers instead of the proxy's own. Needed for correct
+// rate limiting, audit log IPs, and secure-cookie detection.
+app.set('trust proxy', 1);
+
+app.use(requestId);
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        // The frontend's Inter font is loaded from Google Fonts (see
+        // frontend/src/index.css) — allow just those two origins rather
+        // than disabling CSP or self-hosting the font file.
+        'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+        'font-src': ["'self'", 'fonts.gstatic.com'],
+      },
+    },
+  })
+);
 app.use(
   cors({
     origin: config.clientUrl,
@@ -47,6 +74,13 @@ app.get('/api/health', (_req, res) => {
   res.status(200).json({ status: 'ok', env: config.env });
 });
 
+// Live-checked infrastructure status (spec section 60) — distinct from
+// the plain liveness check above.
+app.get('/api/system-health', async (_req, res) => {
+  const report = await getSystemHealth();
+  res.status(200).json(report);
+});
+
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/teams', teamRouter);
@@ -58,17 +92,19 @@ app.use('/api/vehicles', vehicleRouter);
 app.use('/api/campaigns', campaignRouter);
 app.use('/api/tickets', ticketRouter);
 app.use('/api/followups', followUpRouter);
-
-// Phase 8+ routers (analytics, account-health, audit-logs, notifications)
-// mount here as they land.
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/audit-logs', auditLogRouter);
+app.use('/api/notifications', notificationRouter);
+app.use('/api/search', searchRouter);
 
 app.use('/api', notFoundHandler);
 
-// ------------------- Frontend SPA -------------------
-app.use(serveFrontend());
-
-// TODO (later phase): serveFrontend() for the built SPA + catch-all,
-// once the frontend production build is wired into deployment.
+// Serves the built SPA (backend/public, produced by `npm run build` in
+// frontend/) for every non-API route, with a client-side-routing
+// fallback to index.html. No-ops harmlessly if the frontend hasn't been
+// built yet (e.g. local dev, where Vite's own dev server serves it
+// instead — see DEPLOYMENT.md).
+serveFrontend(app);
 
 app.use(errorHandler);
 

@@ -5,6 +5,8 @@ import Ticket, { TicketStatus } from './Ticket.model';
 import Customer from '../Customer/Customer.model';
 import User, { UserRole } from '../User/User.model';
 import { createTicketSchema, updateTicketSchema, listTicketsQuerySchema } from './Ticket.validator';
+import { notify } from '../Notification/Notification.service';
+import { NotificationType } from '../Notification/Notification.model';
 
 export const listTicketsHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listTicketsQuerySchema.safeParse(req.query);
@@ -73,6 +75,16 @@ export const createTicketHandler = asyncHandler(async (req: Request, res: Respon
     assignedTeamId: customer.assignedTeamId,
     createdBy: req.user!.id,
   });
+
+  if (ticket.assignedSellerId) {
+    await notify({
+      userId: ticket.assignedSellerId,
+      type: NotificationType.TICKET_ASSIGNED,
+      title: `Ticket assigned: ${ticket.title}`,
+      entityType: 'Ticket',
+      entityId: ticket.id,
+    });
+  }
 
   res.status(201).json(ticket);
 });

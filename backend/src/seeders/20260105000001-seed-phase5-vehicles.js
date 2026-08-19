@@ -14,7 +14,7 @@ const VEHICLES = [
 ];
 
 module.exports = {
-  up: async (queryInterface) => {
+  up: async (queryInterface, Sequelize) => {
     const now = new Date();
     const rows = VEHICLES.map((v, i) => ({
       id: uuidv4(),
@@ -28,7 +28,7 @@ module.exports = {
       price: v.price,
       currency: 'USD',
       country: 'Japan',
-      images: [],
+      images: Sequelize.literal("ARRAY[]::varchar[]"),
       description: null,
       status: 'AVAILABLE',
       created_at: now,

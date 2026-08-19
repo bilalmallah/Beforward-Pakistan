@@ -17,6 +17,7 @@ import {
 } from './Customer.validator';
 import { assignCustomer } from './Assignment.service';
 import { UserRole } from '../User/User.model';
+import { recordAudit } from '../AuditLog/AuditLog.service';
 
 const profileIncludes = [
   { model: User, as: 'assignedSeller', attributes: ['id', 'fullName', 'email'] },
@@ -162,6 +163,14 @@ export const assignCustomerHandler = asyncHandler(async (req: Request, res: Resp
     sellerId: parsed.data.sellerId,
     teamId: parsed.data.teamId,
     reason: parsed.data.reason,
+  });
+
+  await recordAudit({
+    req,
+    action: 'CUSTOMER_REASSIGNED',
+    entity: 'Customer',
+    entityId: customer.id,
+    metadata: { method: parsed.data.method, sellerId: parsed.data.sellerId, reason: parsed.data.reason },
   });
 
   res.status(200).json(customer);

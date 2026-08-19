@@ -5,6 +5,7 @@ import Campaign from './Campaign.model';
 import CampaignRecipient from './CampaignRecipient.model';
 import { createCampaignSchema } from './Campaign.validator';
 import * as CampaignService from './Campaign.service';
+import { recordAudit } from '../AuditLog/AuditLog.service';
 
 export const listCampaignsHandler = asyncHandler(async (_req: Request, res: Response) => {
   const campaigns = await Campaign.findAll({ order: [['createdAt', 'DESC']] });
@@ -36,16 +37,19 @@ export const createCampaignHandler = asyncHandler(async (req: Request, res: Resp
 
 export const startCampaignHandler = asyncHandler(async (req: Request, res: Response) => {
   const campaign = await CampaignService.startCampaign(req.params.id);
+  await recordAudit({ req, action: 'CAMPAIGN_STARTED', entity: 'Campaign', entityId: campaign.id });
   res.status(200).json(campaign);
 });
 
 export const pauseCampaignHandler = asyncHandler(async (req: Request, res: Response) => {
   const campaign = await CampaignService.pauseCampaign(req.params.id);
+  await recordAudit({ req, action: 'CAMPAIGN_PAUSED', entity: 'Campaign', entityId: campaign.id });
   res.status(200).json(campaign);
 });
 
 export const cancelCampaignHandler = asyncHandler(async (req: Request, res: Response) => {
   const campaign = await CampaignService.cancelCampaign(req.params.id);
+  await recordAudit({ req, action: 'CAMPAIGN_CANCELLED', entity: 'Campaign', entityId: campaign.id });
   res.status(200).json(campaign);
 });
 

@@ -11,6 +11,8 @@ import Template, { TemplateStatus } from '../WhatsApp/Template.model';
 import Vehicle from '../Vehicle/Vehicle.model';
 import User from '../User/User.model';
 import { resolveVariables, renderBody } from '../WhatsApp/TemplateVariable.service';
+import { notify } from '../Notification/Notification.service';
+import { NotificationType } from '../Notification/Notification.model';
 
 function windowExpiry(from: Date): Date {
   return new Date(from.getTime() + config.conversation.serviceWindowHours * 60 * 60 * 1000);
@@ -88,6 +90,16 @@ export async function recordCustomerMessage(customerId: string, body: string): P
   if (conversation.assignedSellerId) {
     emitToUser(conversation.assignedSellerId, 'message:new', { conversationId: conversation.id, message });
     emitToUser(conversation.assignedSellerId, 'conversation:updated', { conversation });
+
+    const senderCustomer = customer;
+    await notify({
+      userId: conversation.assignedSellerId,
+      type: NotificationType.NEW_MESSAGE,
+      title: `New message from ${senderCustomer?.companyName ?? 'a customer'}`,
+      body: body.slice(0, 200),
+      entityType: 'Conversation',
+      entityId: conversation.id,
+    });
   }
 
   return message;

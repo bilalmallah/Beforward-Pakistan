@@ -13,6 +13,8 @@ import VehiclesPage from '../pages/Vehicles/VehiclesPage';
 import CampaignsPage from '../pages/Campaigns/CampaignsPage';
 import TicketsPage from '../pages/Tickets/TicketsPage';
 import FollowUpsPage from '../pages/FollowUps/FollowUpsPage';
+import AnalyticsPage from '../pages/Analytics/AnalyticsPage';
+import WhatsAppHealthPage from '../pages/WhatsAppHealth/WhatsAppHealthPage';
 import { CAN_MANAGE_USERS, CAN_MANAGE_TEAMS } from '../constants/roles';
 
 export default function AppRoutes() {
@@ -50,6 +52,15 @@ export default function AppRoutes() {
         />
         <Route path="/tickets" element={<TicketsPage />} />
         <Route path="/follow-ups" element={<FollowUpsPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route
+          path="/whatsapp-health"
+          element={
+            <ProtectedRoute allowedRoles={CAN_MANAGE_USERS}>
+              <WhatsAppHealthPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/users"
           element={

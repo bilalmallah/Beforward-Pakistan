@@ -1,0 +1,67 @@
+# Nginx reverse proxy for the CRM.
+#
+# The Node backend (PM2-managed, see ../backend/ecosystem.config.cjs)
+# serves BOTH the built React SPA (from backend/public) and the /api/*
+# routes on the same port (4000 by default) — see
+# backend/src/middleware/serveFrontend.ts. Nginx's only job here is
+# TLS termination and being the public-facing port 80/443 listener.
+#
+# Install: copy this file to /etc/nginx/sites-available/crm.conf, then:
+#   ln -s /etc/nginx/sites-available/crm.conf /etc/nginx/sites-enabled/
+#   nginx -t && systemctl reload nginx
+#
+# Replace yourdomain.com below with your real domain before enabling.
+
+upstream crm_backend {
+    server 127.0.0.1:4000;
+    keepalive 32;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name yourdomain.com www.yourdomain.com;
+
+    # certbot (see DEPLOYMENT.md) rewrites this block to add the 443
+    # server below and redirect HTTP -> HTTPS automatically. Until SSL
+    # is set up, this serves plain HTTP.
+
+    client_max_body_size 5m;
+
+    location / {
+        proxy_pass http://crm_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Socket.IO (spec section 26 real-time events) needs the WebSocket
+    # upgrade headers explicitly — without this block, connections will
+    # silently fall back to long-polling or fail depending on client
+    # config, and reconnects will be slow/unreliable.
+    location /socket.io/ {
+        proxy_pass http://crm_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400; # keep long-lived WS connections open
+    }
+
+    # The Meta webhook (spec section 9) must stay reachable over plain
+    # POST with no auth in front of it — Nginx just proxies it through
+    # like any other /api route; the signature check happens in the app.
+    location /api/whatsapp/webhook {
+        proxy_pass http://crm_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

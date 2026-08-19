@@ -26,10 +26,7 @@ async function bootstrap(): Promise<void> {
   // logs and retries rather than crashing the API (see queue/redis.ts).
   startCampaignWorker();
 
-  // server.listen(config.port, () => {
-  //   logger.info(`API listening on port ${config.port} [${config.env}]`);
-  // });
-  server.listen(config.port, '0.0.0.0', () => {
+  server.listen(config.port, () => {
     logger.info(`API listening on port ${config.port} [${config.env}]`);
   });
 }
