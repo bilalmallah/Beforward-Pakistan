@@ -8,7 +8,7 @@
     "dev": "tsx watch src/index.ts",
     "build:frontend": "cd ../frontend && npm install && npm run build",
     "build": "tsc -p tsconfig.json",
-    "start": "tsx src/index.ts",
+    "start": "tsx dist/index.js",
     "lint": "eslint \"src/**/*.ts\"",
     "migrate": "sequelize-cli db:migrate --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
     "migrate:undo": "sequelize-cli db:migrate:undo --config src/config/database.cjs --migrations-path src/migrations --seeders-path src/seeders --models-path src/db/models",
