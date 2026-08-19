@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
-import requireRole from '../../middleware/rbac';
-import { UserRole } from '../User/User.model';
-import { listAuditLogsHandler } from './AuditLog.controller';
+import authMiddleware from '../../middleware/authMiddleware.js';
+import requireRole from '../../middleware/rbac.js';
+import { UserRole } from '../User/User.model.js';
+import { listAuditLogsHandler } from './AuditLog.controller.js';
 
 const router = Router();
 

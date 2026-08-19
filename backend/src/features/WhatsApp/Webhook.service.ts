@@ -1,10 +1,10 @@
 import crypto from 'crypto';
-import config from '../../config/config';
-import logger from '../../utils/logger';
-import Message, { MessageStatus } from '../Conversation/Message.model';
-import MessageEvent from '../Conversation/MessageEvent.model';
-import Customer from '../Customer/Customer.model';
-import { recordCustomerMessage } from '../Conversation/Conversation.service';
+import config from '../../config/config.js';
+import logger from '../../utils/logger.js';
+import Message, { MessageStatus } from '../Conversation/Message.model.js';
+import MessageEvent from '../Conversation/MessageEvent.model.js';
+import Customer from '../Customer/Customer.model.js';
+import { recordCustomerMessage } from '../Conversation/Conversation.service.js';
 
 /**
  * Verifies the X-Hub-Signature-256 header against the raw request body

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import { loginSchema, refreshSchema } from './Auth.validator';
-import * as AuthService from './Auth.service';
+import asyncHandler from '../../utils/asyncHandler.js';
+import { loginSchema, refreshSchema } from './Auth.validator.js';
+import * as AuthService from './Auth.service.js';
 
 export const loginHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = loginSchema.safeParse(req.body);

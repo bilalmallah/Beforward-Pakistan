@@ -1,6 +1,6 @@
 import createError from 'http-errors';
-import config from '../../config/config';
-import logger from '../../utils/logger';
+import config from '../../config/config.js';
+import logger from '../../utils/logger.js';
 
 // Graph API version — verify this against current Meta documentation
 // before going live; do not assume it stays current (spec section 90).

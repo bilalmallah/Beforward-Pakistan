@@ -1,10 +1,10 @@
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import Campaign, { CampaignStatus } from './Campaign.model';
-import CampaignRecipient, { RecipientStatus } from './CampaignRecipient.model';
-import Customer from '../Customer/Customer.model';
-import Template, { TemplateStatus } from '../WhatsApp/Template.model';
-import { enqueueRecipient } from './Campaign.queue';
+import Campaign, { CampaignStatus } from './Campaign.model.js';
+import CampaignRecipient, { RecipientStatus } from './CampaignRecipient.model.js';
+import Customer from '../Customer/Customer.model.js';
+import Template, { TemplateStatus } from '../WhatsApp/Template.model.js';
+import { enqueueRecipient } from './Campaign.queue.js';
 
 interface CreateCampaignInput {
   name: string;

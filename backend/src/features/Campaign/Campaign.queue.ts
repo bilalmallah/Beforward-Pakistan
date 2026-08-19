@@ -1,5 +1,5 @@
 import { Queue } from 'bullmq';
-import redisConnection from '../../queue/redis';
+import redisConnection from '../../queue/redis.js';
 
 export interface CampaignSendJobData {
   campaignId: string;

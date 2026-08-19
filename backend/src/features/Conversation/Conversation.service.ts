@@ -1,18 +1,18 @@
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import config from '../../config/config';
-import Conversation, { ConversationStatus } from './Conversation.model';
-import Message, { MessageDirection, MessageStatus, MessageType } from './Message.model';
-import MessageEvent from './MessageEvent.model';
-import Customer, { CallPermissionStatus } from '../Customer/Customer.model';
-import { emitToUser } from '../../realtime/socket';
-import * as WhatsAppService from '../WhatsApp/WhatsApp.service';
-import Template, { TemplateStatus } from '../WhatsApp/Template.model';
-import Vehicle from '../Vehicle/Vehicle.model';
-import User from '../User/User.model';
-import { resolveVariables, renderBody } from '../WhatsApp/TemplateVariable.service';
-import { notify } from '../Notification/Notification.service';
-import { NotificationType } from '../Notification/Notification.model';
+import config from '../../config/config.js';
+import Conversation, { ConversationStatus } from './Conversation.model.js';
+import Message, { MessageDirection, MessageStatus, MessageType } from './Message.model.js';
+import MessageEvent from './MessageEvent.model.js';
+import Customer, { CallPermissionStatus } from '../Customer/Customer.model.js';
+import { emitToUser } from '../../realtime/socket.js';
+import * as WhatsAppService from '../WhatsApp/WhatsApp.service.js';
+import Template, { TemplateStatus } from '../WhatsApp/Template.model.js';
+import Vehicle from '../Vehicle/Vehicle.model.js';
+import User from '../User/User.model.js';
+import { resolveVariables, renderBody } from '../WhatsApp/TemplateVariable.service.js';
+import { notify } from '../Notification/Notification.service.js';
+import { NotificationType } from '../Notification/Notification.model.js';
 
 function windowExpiry(from: Date): Date {
   return new Date(from.getTime() + config.conversation.serviceWindowHours * 60 * 60 * 1000);

@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
-import requireRole from '../../middleware/rbac';
-import { UserRole } from './User.model';
+import authMiddleware from '../../middleware/authMiddleware.js';
+import requireRole from '../../middleware/rbac.js';
+import { UserRole } from './User.model.js';
 import {
   listUsersHandler,
   getUserHandler,
   createUserHandler,
   updateUserHandler,
   deactivateUserHandler,
-} from './User.controller';
+} from './User.controller.js';
 
 const router = Router();
 

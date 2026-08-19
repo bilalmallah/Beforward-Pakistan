@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import Ticket, { TicketStatus } from './Ticket.model';
-import Customer from '../Customer/Customer.model';
-import User, { UserRole } from '../User/User.model';
-import { createTicketSchema, updateTicketSchema, listTicketsQuerySchema } from './Ticket.validator';
-import { notify } from '../Notification/Notification.service';
-import { NotificationType } from '../Notification/Notification.model';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Ticket, { TicketStatus } from './Ticket.model.js';
+import Customer from '../Customer/Customer.model.js';
+import User, { UserRole } from '../User/User.model.js';
+import { createTicketSchema, updateTicketSchema, listTicketsQuerySchema } from './Ticket.validator.js';
+import { notify } from '../Notification/Notification.service.js';
+import { NotificationType } from '../Notification/Notification.model.js';
 
 export const listTicketsHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listTicketsQuerySchema.safeParse(req.query);

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import Campaign from './Campaign.model';
-import CampaignRecipient from './CampaignRecipient.model';
-import { createCampaignSchema } from './Campaign.validator';
-import * as CampaignService from './Campaign.service';
-import { recordAudit } from '../AuditLog/AuditLog.service';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Campaign from './Campaign.model.js';
+import CampaignRecipient from './CampaignRecipient.model.js';
+import { createCampaignSchema } from './Campaign.validator.js';
+import * as CampaignService from './Campaign.service.js';
+import { recordAudit } from '../AuditLog/AuditLog.service.js';
 
 export const listCampaignsHandler = asyncHandler(async (_req: Request, res: Response) => {
   const campaigns = await Campaign.findAll({ order: [['createdAt', 'DESC']] });

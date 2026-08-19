@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import AuditLog from './AuditLog.model';
-import logger from '../../utils/logger';
+import AuditLog from './AuditLog.model.js';
+import logger from '../../utils/logger.js';
 
 interface AuditEntry {
   req: Request;

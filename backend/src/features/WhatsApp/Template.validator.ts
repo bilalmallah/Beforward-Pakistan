@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TemplateStatus } from './Template.model';
+import { TemplateStatus } from './Template.model.js';
 
 export const createTemplateSchema = z.object({
   name: z.string().min(1, 'Template name is required.'),

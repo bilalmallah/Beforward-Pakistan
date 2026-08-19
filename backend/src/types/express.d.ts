@@ -1,4 +1,4 @@
-import { UserRole } from '../features/User/User.model';
+import { UserRole } from '../features/User/User.model.js';
 
 declare global {
   namespace Express {

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TicketPriority, TicketStatus, TicketCategory } from './Ticket.model';
+import { TicketPriority, TicketStatus, TicketCategory } from './Ticket.model.js';
 
 export const createTicketSchema = z.object({
   customerId: z.string().uuid(),

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import Team from './Team.model';
-import User from '../User/User.model';
-import { createTeamSchema, updateTeamSchema } from './Team.validator';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Team from './Team.model.js';
+import User from '../User/User.model.js';
+import { createTeamSchema, updateTeamSchema } from './Team.validator.js';
 
 export const listTeamsHandler = asyncHandler(async (_req: Request, res: Response) => {
   const teams = await Team.findAll({

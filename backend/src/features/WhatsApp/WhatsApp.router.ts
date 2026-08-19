@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
-import requireRole from '../../middleware/rbac';
-import { UserRole } from '../User/User.model';
+import authMiddleware from '../../middleware/authMiddleware.js';
+import requireRole from '../../middleware/rbac.js';
+import { UserRole } from '../User/User.model.js';
 import {
   verifyWebhookHandler,
   receiveWebhookHandler,
   getBusinessAccountHandler,
   getPhoneNumberHandler,
   getHealthHandler,
-} from './WhatsApp.controller';
+} from './WhatsApp.controller.js';
 
 const router = Router();
 

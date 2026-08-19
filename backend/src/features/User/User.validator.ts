@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UserRole, UserStatus } from './User.model';
+import { UserRole, UserStatus } from './User.model.js';
 
 export const createUserSchema = z.object({
   fullName: z.string().min(2, 'Full name is required.'),

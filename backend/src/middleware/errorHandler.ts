@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { ValidationError as SequelizeValidationError, UniqueConstraintError } from 'sequelize';
 import { isHttpError } from 'http-errors';
 import { ZodError } from 'zod';
-import config from '../config/config';
-import logger from '../utils/logger';
+import config from '../config/config.js';
+import logger from '../utils/logger.js';
 
 /**
  * Centralized error handler. Distinguishes known error types (Sequelize

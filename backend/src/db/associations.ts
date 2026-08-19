@@ -1,19 +1,19 @@
-import User from '../features/User/User.model';
-import Team from '../features/Team/Team.model';
-import Customer from '../features/Customer/Customer.model';
-import CustomerNote from '../features/Customer/CustomerNote.model';
-import AssignmentHistory from '../features/Customer/AssignmentHistory.model';
-import Conversation from '../features/Conversation/Conversation.model';
-import Message from '../features/Conversation/Message.model';
-import MessageEvent from '../features/Conversation/MessageEvent.model';
-import Template from '../features/WhatsApp/Template.model';
-import Vehicle from '../features/Vehicle/Vehicle.model';
-import Campaign from '../features/Campaign/Campaign.model';
-import CampaignRecipient from '../features/Campaign/CampaignRecipient.model';
-import Ticket from '../features/Ticket/Ticket.model';
-import FollowUp from '../features/FollowUp/FollowUp.model';
-import AuditLog from '../features/AuditLog/AuditLog.model';
-import Notification from '../features/Notification/Notification.model';
+import User from '../features/User/User.model.js';
+import Team from '../features/Team/Team.model.js';
+import Customer from '../features/Customer/Customer.model.js';
+import CustomerNote from '../features/Customer/CustomerNote.model.js';
+import AssignmentHistory from '../features/Customer/AssignmentHistory.model.js';
+import Conversation from '../features/Conversation/Conversation.model.js';
+import Message from '../features/Conversation/Message.model.js';
+import MessageEvent from '../features/Conversation/MessageEvent.model.js';
+import Template from '../features/WhatsApp/Template.model.js';
+import Vehicle from '../features/Vehicle/Vehicle.model.js';
+import Campaign from '../features/Campaign/Campaign.model.js';
+import CampaignRecipient from '../features/Campaign/CampaignRecipient.model.js';
+import Ticket from '../features/Ticket/Ticket.model.js';
+import FollowUp from '../features/FollowUp/FollowUp.model.js';
+import AuditLog from '../features/AuditLog/AuditLog.model.js';
+import Notification from '../features/Notification/Notification.model.js';
 
 export default function applyAssociations(): void {
   // Phase 1

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
-import { verifyAccessToken } from '../utils/token';
-import User, { UserStatus } from '../features/User/User.model';
+import { verifyAccessToken } from '../utils/token.js';
+import User, { UserStatus } from '../features/User/User.model.js';
 
 /**
  * Verifies the bearer access token, loads the user, and rejects

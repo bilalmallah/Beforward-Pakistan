@@ -1,6 +1,6 @@
 import IORedis from 'ioredis';
-import config from '../config/config';
-import logger from '../utils/logger';
+import config from '../config/config.js';
+import logger from '../utils/logger.js';
 
 /**
  * BullMQ requires this exact option — without it, ioredis will throw on

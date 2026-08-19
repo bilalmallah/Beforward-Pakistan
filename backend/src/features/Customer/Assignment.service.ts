@@ -1,10 +1,10 @@
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import Customer from './Customer.model';
-import AssignmentHistory, { AssignmentMethod } from './AssignmentHistory.model';
-import User, { UserRole, UserStatus } from '../User/User.model';
-import { notify } from '../Notification/Notification.service';
-import { NotificationType } from '../Notification/Notification.model';
+import Customer from './Customer.model.js';
+import AssignmentHistory, { AssignmentMethod } from './AssignmentHistory.model.js';
+import User, { UserRole, UserStatus } from '../User/User.model.js';
+import { notify } from '../Notification/Notification.service.js';
+import { NotificationType } from '../Notification/Notification.model.js';
 
 interface AssignInput {
   customerId: string;

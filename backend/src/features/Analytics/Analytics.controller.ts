@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import * as AnalyticsService from './Analytics.service';
+import asyncHandler from '../../utils/asyncHandler.js';
+import * as AnalyticsService from './Analytics.service.js';
 
 export const getDashboardHandler = asyncHandler(async (_req: Request, res: Response) => {
   const summary = await AnalyticsService.getDashboardSummary();

@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
-import Message, { MessageStatus, MessageDirection } from '../Conversation/Message.model';
-import Customer from '../Customer/Customer.model';
-import Template, { TemplateStatus } from './Template.model';
-import * as WhatsAppService from './WhatsApp.service';
+import Message, { MessageStatus, MessageDirection } from '../Conversation/Message.model.js';
+import Customer from '../Customer/Customer.model.js';
+import Template, { TemplateStatus } from './Template.model.js';
+import * as WhatsAppService from './WhatsApp.service.js';
 
 export type MetaConnectionStatus = 'HEALTHY' | 'NOT_CONFIGURED' | 'ERROR';
 export type InternalHealthLevel = 'GOOD' | 'WARNING' | 'PAUSED';

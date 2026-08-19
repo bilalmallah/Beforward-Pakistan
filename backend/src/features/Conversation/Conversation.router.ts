@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
-import requireRole from '../../middleware/rbac';
-import { UserRole } from '../User/User.model';
+import authMiddleware from '../../middleware/authMiddleware.js';
+import requireRole from '../../middleware/rbac.js';
+import { UserRole } from '../User/User.model.js';
 import {
   listConversationsHandler,
   getConversationHandler,
@@ -10,7 +10,7 @@ import {
   overrideTemplateLimitHandler,
   markReadHandler,
   simulateInboundHandler,
-} from './Conversation.controller';
+} from './Conversation.controller.js';
 
 const router = Router();
 

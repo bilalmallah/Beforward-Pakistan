@@ -1,7 +1,7 @@
 import createError from 'http-errors';
-import Customer from '../Customer/Customer.model';
-import User from '../User/User.model';
-import Vehicle from '../Vehicle/Vehicle.model';
+import Customer from '../Customer/Customer.model.js';
+import User from '../User/User.model.js';
+import Vehicle from '../Vehicle/Vehicle.model.js';
 
 /**
  * The full set of variables the system knows how to resolve. A template's

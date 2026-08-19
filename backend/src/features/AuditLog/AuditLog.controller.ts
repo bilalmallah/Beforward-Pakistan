@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import asyncHandler from '../../utils/asyncHandler';
-import AuditLog from './AuditLog.model';
-import User from '../User/User.model';
+import asyncHandler from '../../utils/asyncHandler.js';
+import AuditLog from './AuditLog.model.js';
+import User from '../User/User.model.js';
 
 export const listAuditLogsHandler = asyncHandler(async (req: Request, res: Response) => {
   const { entity, userId, page = '1', pageSize = '50' } = req.query as Record<string, string>;

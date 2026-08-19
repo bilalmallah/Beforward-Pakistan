@@ -1,5 +1,5 @@
-import sequelize from '../../db/sequelize';
-import redisConnection from '../../queue/redis';
+import sequelize from '../../db/sequelize.js';
+import redisConnection from '../../queue/redis.js';
 
 export type ComponentStatus = 'UP' | 'DOWN';
 

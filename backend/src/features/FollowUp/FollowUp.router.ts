@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
-import { listFollowUpsHandler, createFollowUpHandler, updateFollowUpHandler } from './FollowUp.controller';
+import authMiddleware from '../../middleware/authMiddleware.js';
+import { listFollowUpsHandler, createFollowUpHandler, updateFollowUpHandler } from './FollowUp.controller.js';
 
 const router = Router();
 

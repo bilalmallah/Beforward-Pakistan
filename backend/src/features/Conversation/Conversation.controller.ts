@@ -1,25 +1,25 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import asyncHandler from '../../utils/asyncHandler';
-import Conversation from './Conversation.model';
-import Message from './Message.model';
-import Customer from '../Customer/Customer.model';
-import { UserRole } from '../User/User.model';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Conversation from './Conversation.model.js';
+import Message from './Message.model.js';
+import Customer from '../Customer/Customer.model.js';
+import { UserRole } from '../User/User.model.js';
 import {
   sendMessageSchema,
   simulateInboundSchema,
   sendTemplateMessageSchema,
   listConversationsQuerySchema,
-} from './Conversation.validator';
+} from './Conversation.validator.js';
 import {
   recordOutboundMessage,
   recordCustomerMessage,
   recordTemplateMessage,
   overrideTemplateLimit,
   markConversationRead,
-} from './Conversation.service';
-import { recordAudit } from '../AuditLog/AuditLog.service';
+} from './Conversation.service.js';
+import { recordAudit } from '../AuditLog/AuditLog.service.js';
 
 export const listConversationsHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listConversationsQuerySchema.safeParse(req.query);

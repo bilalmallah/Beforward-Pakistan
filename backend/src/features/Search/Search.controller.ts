@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import { globalSearch } from './Search.service';
+import asyncHandler from '../../utils/asyncHandler.js';
+import { globalSearch } from './Search.service.js';
 
 export const searchHandler = asyncHandler(async (req: Request, res: Response) => {
   const q = (req.query.q as string | undefined)?.trim();

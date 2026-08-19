@@ -1,5 +1,5 @@
-import Notification, { NotificationType } from './Notification.model';
-import { emitToUser } from '../../realtime/socket';
+import Notification, { NotificationType } from './Notification.model.js';
+import { emitToUser } from '../../realtime/socket.js';
 
 interface NotifyInput {
   userId: string;

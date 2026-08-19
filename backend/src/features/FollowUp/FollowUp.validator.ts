@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FollowUpStatus } from './FollowUp.model';
+import { FollowUpStatus } from './FollowUp.model.js';
 
 export const createFollowUpSchema = z.object({
   customerId: z.string().uuid(),

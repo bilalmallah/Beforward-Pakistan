@@ -1,13 +1,13 @@
 import { Op } from 'sequelize';
-import Message, { MessageDirection } from '../Conversation/Message.model';
-import Conversation, { ConversationStatus } from '../Conversation/Conversation.model';
-import Customer, { CustomerStatus } from '../Customer/Customer.model';
-import Ticket from '../Ticket/Ticket.model';
-import FollowUp from '../FollowUp/FollowUp.model';
-import Campaign from '../Campaign/Campaign.model';
-import Vehicle, { VehicleStatus } from '../Vehicle/Vehicle.model';
-import User, { UserRole } from '../User/User.model';
-import Team from '../Team/Team.model';
+import Message, { MessageDirection } from '../Conversation/Message.model.js';
+import Conversation, { ConversationStatus } from '../Conversation/Conversation.model.js';
+import Customer, { CustomerStatus } from '../Customer/Customer.model.js';
+import Ticket from '../Ticket/Ticket.model.js';
+import FollowUp from '../FollowUp/FollowUp.model.js';
+import Campaign from '../Campaign/Campaign.model.js';
+import Vehicle, { VehicleStatus } from '../Vehicle/Vehicle.model.js';
+import User, { UserRole } from '../User/User.model.js';
+import Team from '../Team/Team.model.js';
 
 export interface SellerAnalytics {
   sellerId: string;

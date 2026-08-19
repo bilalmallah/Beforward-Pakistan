@@ -1,12 +1,12 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import app from './app';
-import config from './config/config';
-import connectDb from './config/connectDb';
-import applyAssociations from './db/associations';
-import { initSocket } from './realtime/socket';
-import { startCampaignWorker } from './features/Campaign/Campaign.worker';
-import logger from './utils/logger';
+import app from './app.js';
+import config from './config/config.js';
+import connectDb from './config/connectDb.js';
+import applyAssociations from './db/associations.js';
+import { initSocket } from './realtime/socket.js';
+import { startCampaignWorker } from './features/Campaign/Campaign.worker.js';
+import logger from './utils/logger.js';
 
 async function bootstrap(): Promise<void> {
   applyAssociations();

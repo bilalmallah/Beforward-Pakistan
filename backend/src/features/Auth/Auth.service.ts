@@ -1,6 +1,6 @@
 import createError from 'http-errors';
-import User, { UserStatus } from '../User/User.model';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/token';
+import User, { UserStatus } from '../User/User.model.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/token.js';
 
 export interface AuthResponse {
   user: ReturnType<User['toSafeJSON']>;

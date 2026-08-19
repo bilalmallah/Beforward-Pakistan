@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
-import { verifyAccessToken } from '../utils/token';
-import logger from '../utils/logger';
+import { verifyAccessToken } from '../utils/token.js';
+import logger from '../utils/logger.js';
 
 let io: Server | null = null;
 

@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
+import authMiddleware from '../../middleware/authMiddleware.js';
 import {
   listTicketsHandler,
   getTicketHandler,
   createTicketHandler,
   updateTicketHandler,
-} from './Ticket.controller';
+} from './Ticket.controller.js';
 
 const router = Router();
 

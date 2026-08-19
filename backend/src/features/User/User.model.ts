@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional, CreationOptional } from 'sequelize';
 import bcrypt from 'bcryptjs';
-import sequelize from '../../db/sequelize';
+import sequelize from '../../db/sequelize.js';
 
 export enum UserRole {
   SUPER_ADMIN = 'SUPER_ADMIN',

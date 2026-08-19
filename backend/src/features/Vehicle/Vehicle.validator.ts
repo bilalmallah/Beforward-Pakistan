@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { VehicleStatus, Transmission, FuelType } from './Vehicle.model';
+import { VehicleStatus, Transmission, FuelType } from './Vehicle.model.js';
 
 export const createVehicleSchema = z.object({
   stockId: z.string().min(1, 'Stock ID is required.'),

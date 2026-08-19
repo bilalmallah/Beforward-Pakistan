@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional, CreationOptional } from 'sequelize';
-import sequelize from '../../db/sequelize';
+import sequelize from '../../db/sequelize.js';
 
 export enum FollowUpStatus {
   PENDING = 'PENDING',

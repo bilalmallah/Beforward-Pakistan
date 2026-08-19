@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
-import Customer from '../Customer/Customer.model';
-import Ticket from '../Ticket/Ticket.model';
-import Vehicle from '../Vehicle/Vehicle.model';
-import { UserRole } from '../User/User.model';
+import Customer from '../Customer/Customer.model.js';
+import Ticket from '../Ticket/Ticket.model.js';
+import Vehicle from '../Vehicle/Vehicle.model.js';
+import { UserRole } from '../User/User.model.js';
 
 export interface SearchResults {
   customers: { id: string; label: string; sublabel: string | null }[];

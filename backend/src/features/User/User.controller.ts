@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import asyncHandler from '../../utils/asyncHandler';
-import User from './User.model';
-import Team from '../Team/Team.model';
-import { createUserSchema, updateUserSchema, listUsersQuerySchema } from './User.validator';
-import { recordAudit } from '../AuditLog/AuditLog.service';
+import asyncHandler from '../../utils/asyncHandler.js';
+import User from './User.model.js';
+import Team from '../Team/Team.model.js';
+import { createUserSchema, updateUserSchema, listUsersQuerySchema } from './User.validator.js';
+import { recordAudit } from '../AuditLog/AuditLog.service.js';
 
 export const listUsersHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listUsersQuerySchema.safeParse(req.query);

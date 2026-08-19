@@ -1,5 +1,5 @@
-import sequelize from '../db/sequelize';
-import logger from '../utils/logger';
+import sequelize from '../db/sequelize.js';
+import logger from '../utils/logger.js';
 
 /**
  * Fail-fast DB connection, per Teal Standard: authenticate at boot,

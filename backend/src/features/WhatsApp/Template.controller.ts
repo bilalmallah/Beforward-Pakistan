@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import Template, { TemplateStatus } from './Template.model';
-import { createTemplateSchema, updateTemplateStatusSchema } from './Template.validator';
-import { assertVariablesAreKnown } from './TemplateVariable.service';
-import { recordAudit } from '../AuditLog/AuditLog.service';
-import { notify } from '../Notification/Notification.service';
-import { NotificationType } from '../Notification/Notification.model';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Template, { TemplateStatus } from './Template.model.js';
+import { createTemplateSchema, updateTemplateStatusSchema } from './Template.validator.js';
+import { assertVariablesAreKnown } from './TemplateVariable.service.js';
+import { recordAudit } from '../AuditLog/AuditLog.service.js';
+import { notify } from '../Notification/Notification.service.js';
+import { NotificationType } from '../Notification/Notification.model.js';
 
 export const listTemplatesHandler = asyncHandler(async (req: Request, res: Response) => {
   const status = req.query.status as TemplateStatus | undefined;

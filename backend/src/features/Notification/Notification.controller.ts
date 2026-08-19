@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
-import asyncHandler from '../../utils/asyncHandler';
-import Notification from './Notification.model';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Notification from './Notification.model.js';
 
 export const listNotificationsHandler = asyncHandler(async (req: Request, res: Response) => {
   const unreadOnly = req.query.unread === 'true';

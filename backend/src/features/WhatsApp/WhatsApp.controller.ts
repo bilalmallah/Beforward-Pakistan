@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import asyncHandler from '../../utils/asyncHandler';
-import logger from '../../utils/logger';
-import { verifySignature, verifyWebhookChallenge, processWebhookPayload } from './Webhook.service';
-import * as WhatsAppService from './WhatsApp.service';
-import * as WhatsAppHealthService from './WhatsAppHealth.service';
+import asyncHandler from '../../utils/asyncHandler.js';
+import logger from '../../utils/logger.js';
+import { verifySignature, verifyWebhookChallenge, processWebhookPayload } from './Webhook.service.js';
+import * as WhatsAppService from './WhatsApp.service.js';
+import * as WhatsAppHealthService from './WhatsAppHealth.service.js';
 
 /** Meta's subscription verification handshake. */
 export const verifyWebhookHandler = (req: Request, res: Response): void => {

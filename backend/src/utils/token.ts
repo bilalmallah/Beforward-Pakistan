@@ -1,6 +1,6 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
-import config from '../config/config';
-import { UserRole } from '../features/User/User.model';
+import config from '../config/config.js';
+import { UserRole } from '../features/User/User.model.js';
 
 export interface AccessTokenPayload {
   id: string;

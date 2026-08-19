@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
-import { UserRole } from '../features/User/User.model';
+import { UserRole } from '../features/User/User.model.js';
 
 /**
  * Restricts a route to the given roles. Always runs after authMiddleware.

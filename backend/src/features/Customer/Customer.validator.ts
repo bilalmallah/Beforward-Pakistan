@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { CustomerStatus, LeadSource, CallPermissionStatus } from './Customer.model';
-import { AssignmentMethod } from './AssignmentHistory.model';
+import { CustomerStatus, LeadSource, CallPermissionStatus } from './Customer.model.js';
+import { AssignmentMethod } from './AssignmentHistory.model.js';
 
 export const createCustomerSchema = z.object({
   companyName: z.string().min(1, 'Company name is required.'),

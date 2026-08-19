@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { MessageType } from './Message.model';
+import { MessageType } from './Message.model.js';
 
 export const sendMessageSchema = z.object({
   body: z.string().min(1, 'Message cannot be empty.'),

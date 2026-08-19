@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import asyncHandler from '../../utils/asyncHandler';
-import Vehicle from './Vehicle.model';
-import { createVehicleSchema, updateVehicleSchema, listVehiclesQuerySchema } from './Vehicle.validator';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Vehicle from './Vehicle.model.js';
+import { createVehicleSchema, updateVehicleSchema, listVehiclesQuerySchema } from './Vehicle.validator.js';
 
 export const listVehiclesHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listVehiclesQuerySchema.safeParse(req.query);

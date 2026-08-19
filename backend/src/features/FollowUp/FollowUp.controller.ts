@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import asyncHandler from '../../utils/asyncHandler';
-import FollowUp from './FollowUp.model';
-import Customer from '../Customer/Customer.model';
-import { UserRole } from '../User/User.model';
-import { createFollowUpSchema, updateFollowUpSchema, listFollowUpsQuerySchema } from './FollowUp.validator';
+import asyncHandler from '../../utils/asyncHandler.js';
+import FollowUp from './FollowUp.model.js';
+import Customer from '../Customer/Customer.model.js';
+import { UserRole } from '../User/User.model.js';
+import { createFollowUpSchema, updateFollowUpSchema, listFollowUpsQuerySchema } from './FollowUp.validator.js';
 
 export const listFollowUpsHandler = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listFollowUpsQuerySchema.safeParse(req.query);

@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import authMiddleware from '../../middleware/authMiddleware';
-import requireRole from '../../middleware/rbac';
-import { UserRole } from '../User/User.model';
+import authMiddleware from '../../middleware/authMiddleware.js';
+import requireRole from '../../middleware/rbac.js';
+import { UserRole } from '../User/User.model.js';
 import {
   getDashboardHandler,
   getSellerAnalyticsHandler,
@@ -9,7 +9,7 @@ import {
   getTeamAnalyticsHandler,
   getCampaignAnalyticsHandler,
   getVehicleAnalyticsHandler,
-} from './Analytics.controller';
+} from './Analytics.controller.js';
 
 const router = Router();
 

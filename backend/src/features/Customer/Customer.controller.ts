@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import createError from 'http-errors';
 import { Op } from 'sequelize';
-import asyncHandler from '../../utils/asyncHandler';
-import Customer, { CallPermissionStatus } from './Customer.model';
-import CustomerNote from './CustomerNote.model';
-import AssignmentHistory from './AssignmentHistory.model';
-import User from '../User/User.model';
-import Team from '../Team/Team.model';
+import asyncHandler from '../../utils/asyncHandler.js';
+import Customer, { CallPermissionStatus } from './Customer.model.js';
+import CustomerNote from './CustomerNote.model.js';
+import AssignmentHistory from './AssignmentHistory.model.js';
+import User from '../User/User.model.js';
+import Team from '../Team/Team.model.js';
 import {
   createCustomerSchema,
   updateCustomerSchema,
@@ -14,10 +14,10 @@ import {
   assignCustomerSchema,
   createNoteSchema,
   listCustomersQuerySchema,
-} from './Customer.validator';
-import { assignCustomer } from './Assignment.service';
-import { UserRole } from '../User/User.model';
-import { recordAudit } from '../AuditLog/AuditLog.service';
+} from './Customer.validator.js';
+import { assignCustomer } from './Assignment.service.js';
+import { UserRole } from '../User/User.model.js';
+import { recordAudit } from '../AuditLog/AuditLog.service.js';
 
 const profileIncludes = [
   { model: User, as: 'assignedSeller', attributes: ['id', 'fullName', 'email'] },
