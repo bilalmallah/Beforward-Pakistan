@@ -74,42 +74,28 @@ it.** Outbound messages likewise stay `QUEUED` rather than being marked
 Both `backend` and `frontend` type-check and build cleanly (`tsc --noEmit`,
 `npm run build`).
 
-## Backend runtime: compiled CommonJS
+## Backend runtime: ESM
 
-**Updated for Hostinger deployment.** The backend previously ran as a
-native ES module directly via `tsx` in both dev and production. It's
-now a standard TypeScript → CommonJS build: `npm run build:backend`
-compiles `src/` to plain `dist/*.js` (via `tsc`, `"module": "CommonJS"`
-in `tsconfig.json`), and production runs `node dist/index.js` directly
-— no `tsx`, no TypeScript, no dev tooling in the production process.
-`backend/package.json` no longer sets `"type": "module"`, so the
-compiled output is unambiguous CommonJS. `npm run dev` still uses `tsx`
-for fast local iteration (it handles `.ts` files directly regardless of
-the package's module type) — that remains a dev-only convenience and
-isn't part of the production path.
+The backend runs as a native ES module (`"type": "module"` in
+`backend/package.json`), executed directly by [tsx](https://github.com/privatenumber/tsx)
+— no separate compile-to-`dist` step. `npm run dev` / `npm start` both run
+`tsx src/index.ts`; `npm run build` now just type-checks (`tsc --noEmit`).
+This keeps every relative import in the codebase working without adding
+explicit `.js` extensions everywhere, which plain Node ESM would otherwise
+require.
 
-Why CommonJS instead of fixing the ESM output: a NodeNext-style ESM
-build would require every relative import across the ~90 backend
-source files to carry an explicit `.js` extension (`from './app'` →
-`from './app.js'`) since plain Node ESM has no extensionless module
-resolution. CommonJS's `require()` already resolves extensionless
-imports natively, so compiling to CommonJS needed zero import changes
-across the codebase — the only source change was
-`backend/src/middleware/serveFrontend.ts`, which used
-`import.meta.url` (ESM-only) to derive `__dirname`; it now uses the
-native CommonJS `__dirname` global directly.
-
-`sequelize-cli` (migrations/seeders) already used explicit CommonJS
-regardless of the app's own module system:
-- `backend/src/config/database.cjs` (explicit `.cjs` extension, always
-  CommonJS regardless of any `"type"` setting)
+`sequelize-cli` (migrations/seeders) still needs CommonJS — it `require()`s
+its config and migration files directly. That's handled by:
+- `backend/src/config/database.cjs` (explicit `.cjs` extension, immune to
+  the root `"type": "module"`)
+- `backend/src/package.json` with `{"type": "commonjs"}`, which overrides
+  the root setting for everything under `src/` when Node resolves plain
+  `.js` files (i.e. the migration/seeder files) — the `.ts` application
+  code is unaffected, since tsx handles that directly
 - migration/seed npm scripts pass `--config`, `--migrations-path`, and
-  `--seeders-path` explicitly rather than relying on a `.sequelizerc`
-
-The nested `backend/src/package.json` that used to override `"type"` to
-`"commonjs"` for that subtree has been removed — it's redundant now
-that the root `backend/package.json` has no `"type": "module"` to
-override in the first place.
+  `--seeders-path` explicitly rather than relying on a `.sequelizerc` (removed,
+  since Node's extensionless-file resolution under `"type": "module"` made
+  `require()`-ing it unreliable)
 
 ## Phase 4
 
@@ -190,8 +176,8 @@ complete" per the spec's own bar:
 
 Both `backend` and `frontend` type-check and build cleanly (`tsc --noEmit`,
 `npm run build`), and the whole app still boots correctly end-to-end
-(verified by running it directly — it only stops at the expected point,
-connecting to Postgres).
+(verified with `tsx` — it only stops at the expected point, connecting to
+Postgres).
 
 ## Phase 6
 
@@ -322,9 +308,9 @@ What changed to make this real, not aspirational:
 - `backend/src/middleware/serveFrontend.ts` serves those static assets
   and falls back to `index.html` for client-side routes, while never
   intercepting `/api/*` — even unmatched ones, which still 404 as JSON
-- `backend/ecosystem.config.cjs` — a PM2 process definition (for the
-  self-managed VPS path) that runs the compiled `dist/index.js` with
-  plain `node`, matching `npm start`
+- `backend/ecosystem.config.cjs` — a PM2 process definition that runs
+  the app the same way `npm start` does (via `tsx`, no separate compile
+  step), so dev and prod stay identical
 
 **All of this was actually run, not just written.** In this build
 environment I installed real Postgres and Redis (not the placeholders
@@ -410,7 +396,7 @@ npm run seed               # creates 1 Super Admin, 2 Admins, 5 Managers,
                             # 20 Salespeople across 4 teams — all with
                             # password: ChangeMe123!  (change before any
                             # real deployment)
-npm run dev                 # http://localhost:4000 (tsx, dev only — see "Backend runtime" above)
+npm run dev                 # http://localhost:4000 (tsx, ESM — see above)
 ```
 
 ### Frontend
