@@ -220,7 +220,7 @@ const PrivacyPolicy: React.FC = () => {
               </p>
 
               <p className="mt-1 text-sm text-slate-600">
-                Email: bilal@tealclimate.com
+                Email: bilal@tealclimate.com <br />
                 Contact Number: +92 3463454342
               </p>
             </div>
