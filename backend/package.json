@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build:frontend": "tsc -p tsconfig.json && cd ../frontend && npm install --include=dev && npm run build",
+    "build:frontend": "npm install --include=dev && tsc -p tsconfig.json && cd ../frontend && npm install --include=dev && npm run build",
     "build": "npm run build:frontend",
     
     "start": "node dist/index.js",
