@@ -21,8 +21,7 @@ export default function DashboardPage() {
           This is the Phase 1 scaffold: authentication, RBAC, database, users, and teams are
           live. Customer management, the WhatsApp inbox, campaigns, tickets, vehicles, and
           analytics widgets are built in the phases that follow.
-
-          Shahzad ne ghlt kia university mai addmission na leke
+          
         </p>
       </Card>
     </div>
